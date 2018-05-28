@@ -1,3 +1,11 @@
 regCenter:
   serverList: localhost:2181
   namespace: timer-task-database
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/timer?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    schema: classpath:schema/*.sql
