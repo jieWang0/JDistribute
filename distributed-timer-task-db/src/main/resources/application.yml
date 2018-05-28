@@ -1,3 +1,0 @@
-regCenter:
-  serverList: localhost:2181
-  namespace: timer-task-database
