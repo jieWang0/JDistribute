@@ -56,10 +56,10 @@ public class databaseConfig {
     //372817ms/1w
     private void initialDatabase() {
         long beginTime = new Date().getTime();
-        final int total = 2*100;
+        final int total = 2*1000000;
         jdbcTemplate.batchUpdate(initialDatabaseSql, new BatchPreparedStatementSetter() {
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
-                preparedStatement.setString(1,String.valueOf(i+60700+total));
+                preparedStatement.setString(1,String.valueOf(i));
                 preparedStatement.setString(2,"data for test timerTask");
             }
             public int getBatchSize() {
