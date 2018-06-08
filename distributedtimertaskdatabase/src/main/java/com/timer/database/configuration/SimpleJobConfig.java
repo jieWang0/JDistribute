@@ -53,11 +53,15 @@ public class SimpleJobConfig {
 
         //作业核心配置信息，作业名称、CRON表达式、分片总数。
         JobCoreConfiguration coreConfig = JobCoreConfiguration.
-                newBuilder("DatabaseSimpleJob", "0/5 * * * * ?", 3).
-               // shardingItemParameters("0=Beijing,1=Shanghai,2=Guangzhou").
-                build();
+                newBuilder(StringAlias.simpleJobName, StringAlias.cron, StringAlias.sharddingCount)
+                .build();
         SimpleJobConfiguration simpleJobConfig = new SimpleJobConfiguration(coreConfig, DSimpleJob.class.getCanonicalName());
-        SpringJobScheduler scheduler = new SpringJobScheduler(simpleJob, regCenter, LiteJobConfiguration.newBuilder(simpleJobConfig).overwrite(true).build());
+
+        LiteJobConfiguration liteJobConfig = LiteJobConfiguration.newBuilder(simpleJobConfig)
+             //   .jobShardingStrategyClass("../strategy/ShardingForServerStrategy")
+                .overwrite(true)
+                .build();
+        SpringJobScheduler scheduler = new SpringJobScheduler(simpleJob, regCenter, liteJobConfig);
         scheduler.init();
         return scheduler;
     }

@@ -5,3 +5,9 @@ CREATE TABLE IF NOT EXISTS `message` (
   `createTime` DATE DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `sharding` (
+  `id` int(32) NOT NULL  COMMENT '分片id',
+  `names` varchar(1024) DEFAULT NULL COMMENT '集团名集合',
+  PRIMARY KEY (`id`)
+);
