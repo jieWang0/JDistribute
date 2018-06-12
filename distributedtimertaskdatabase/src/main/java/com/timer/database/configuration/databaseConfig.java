@@ -10,9 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @Configuration
 public class databaseConfig {
@@ -36,7 +35,7 @@ public class databaseConfig {
     @Value("${spring.datasource.url}")
     static String url;*/
 
-    private final String initialCheckSql = "select message from message limit 1";
+    private final String initialCheckSql = "select new from message limit 1";
     private final String initialDatabaseSql = "insert into message(id,message,createTime) values(?,?,SYSDATE()) ";
 
     @Bean
@@ -58,7 +57,15 @@ public class databaseConfig {
         }
         List<Map<String, Object>> result = jdbcTemplate.queryForList(initialCheckSql);
         if(result.isEmpty()) {
-            initialDatabaseNewest();
+            List<String> nameList =new ArrayList<String>();
+            nameList.add("A");
+            nameList.add("G");
+            nameList.add("J");
+            nameList.add("Z");
+            Random rand = new Random();
+            for(int i =0;i<nameList.size();i++) {
+                initialDatabaseNew(nameList.get(i),rand.nextInt(200));
+            }
         }
     }
 
@@ -82,7 +89,7 @@ public class databaseConfig {
 
 
     //266ms/1w
-    private void initialDatabaseNew() {
+    private void initialDatabaseNew(String name,int num) {
         Connection connection = null;
         Statement statement = null;
         try {
@@ -91,12 +98,12 @@ public class databaseConfig {
             statement = connection.createStatement();
             long begin = System.currentTimeMillis();
             int i =0,j=1;
-            for (;j<101;j++) {
-                StringBuffer sql = new StringBuffer("insert into message(id,message,createTime) values");
-                for (; i < 20000*j; i++) {
-                    sql.append("('" + i + "','data for test timerTask',SYSDATE()),");
+            for (;j<num;j++) {
+                StringBuffer sql = new StringBuffer("insert into message(name,userName,old,new,result,createTime) values");
+                for (; i < 10000*j; i++) {
+                    sql.append("('" + name + "',"+ "'test',"+10+","+100+","+0+",SYSDATE()),");
                 }
-                sql.append("('" + i++ + "','data for test timerTask',SYSDATE())");
+                sql.append("('"+ name + "',"+ "'test',"+10+","+100+","+0+",SYSDATE())");
                 statement.execute(sql.toString());
             }
             connection.commit();
