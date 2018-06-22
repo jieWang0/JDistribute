@@ -1,13 +1,14 @@
 
 CREATE TABLE IF NOT EXISTS `message` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `name` varchar(1024) DEFAULT NULL COMMENT '部门名称',
+  `name` varchar(32) DEFAULT NULL COMMENT '部门名称',
   `userName` varchar(1024) DEFAULT NULL COMMENT '员工名称',
   `old` int(32) DEFAULT NULL COMMENT '开始数据',
   `new` int(32) DEFAULT NULL COMMENT '最新数据',
   `result` int(32) DEFAULT NULL COMMENT '结果数据',
   `createTime` DATE DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY (`name`)
 );
 
 CREATE TABLE IF NOT EXISTS `sharding` (

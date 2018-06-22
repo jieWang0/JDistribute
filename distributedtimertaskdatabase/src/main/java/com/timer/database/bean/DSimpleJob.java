@@ -30,6 +30,7 @@ public class DSimpleJob implements SimpleJob {
                             long begin = System.currentTimeMillis();
                             System.out.print(list);
                             System.out.println("---------------begin task");
+                            System.out.println("当前线程ID"+Thread.currentThread().getId());
                             for(String str:list) {
                                 String updateSql = "UPDATE message SET result=new-old where name = "+"'"+str+"'";
                                 statement.executeUpdate(updateSql);
