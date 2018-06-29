@@ -1,6 +1,6 @@
 package com.timer.database.strategy;
 
-import com.timer.database.configuration.StringAlias;
+import com.timer.database.configuration.Alias;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -18,7 +18,7 @@ public class ShardingForDataStrategy {
             int num = names.size();
              Map<Integer,List<String>> shardNew = new HashMap<Integer,List<String>>();
                 while (!names.isEmpty()) {
-                    for(int i =0;i<StringAlias.sharddingCount;i++) {
+                    for(int i = 0; i<Alias.sharddingCount; i++) {
                         if(shardNew.containsKey(i)) {
                             shardNew.get(i).add(names.get(0));
                         }else {

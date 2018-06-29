@@ -1,3 +1,4 @@
+
 regCenter:
   serverList: 99.6.145.116:2181
   namespace: timer-task-database
@@ -11,3 +12,5 @@ spring:
     schema: classpath:schema/*.sql
   tomcat:
     default-auto-commit: false
+server:
+  port: 8080

@@ -1,18 +1,13 @@
 package com.timer.database.configuration;
 
 
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
-import com.dangdang.ddframe.job.config.JobRootConfiguration;
 import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
-import com.dangdang.ddframe.job.event.JobEventConfiguration;
 import com.dangdang.ddframe.job.lite.api.JobScheduler;
 import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.base.CoordinatorRegistryCenter;
-import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.timer.database.bean.DSimpleJob;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,7 +48,7 @@ public class SimpleJobConfig {
 
         //作业核心配置信息，作业名称、CRON表达式、分片总数。
         JobCoreConfiguration coreConfig = JobCoreConfiguration.
-                newBuilder(StringAlias.simpleJobName, StringAlias.cron, StringAlias.sharddingCount)
+                newBuilder(Alias.simpleJobName, Alias.cron, Alias.sharddingCount)
                 .build();
         SimpleJobConfiguration simpleJobConfig = new SimpleJobConfiguration(coreConfig, DSimpleJob.class.getCanonicalName());
 

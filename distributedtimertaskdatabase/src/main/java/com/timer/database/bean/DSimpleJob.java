@@ -3,8 +3,8 @@ package com.timer.database.bean;
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import com.timer.database.strategy.ShardingForDataStrategy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.sql.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +12,10 @@ import java.util.concurrent.Executors;
 
 @Component
 public class DSimpleJob implements SimpleJob {
+
+    @Value("${spring.datasource.url}")
+    static String url;
+
     private static ExecutorService executor = Executors.newFixedThreadPool(6);
     public void execute(final ShardingContext shardingContext) {
 
@@ -22,7 +26,6 @@ public class DSimpleJob implements SimpleJob {
                         Connection connection = null;
                         Statement statement = null;
                         List<String> list = ShardingForDataStrategy.sharding.get(shardingContext.getShardingItem());
-
                         try {
                             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/timer?useUnicode=true&characterEncoding=utf-8","root","123456");
                             connection.setAutoCommit(false);
@@ -32,18 +35,17 @@ public class DSimpleJob implements SimpleJob {
                             System.out.println("---------------begin task");
                             System.out.println("当前线程ID"+Thread.currentThread().getId());
                             for(String str:list) {
-                                String updateSql = "UPDATE message SET result=new-old where name = "+"'"+str+"'";
+                                String updateSql = "UPDATE message SET result=result-old where name = "+"'"+str+"'";
                                 statement.executeUpdate(updateSql);
                             }
                             connection.commit();
                             long end = System.currentTimeMillis();
                             System.out.println("当前线程ID"+Thread.currentThread().getId());
                             System.out.println(list+"---------任务执行完毕，耗时："+(end-begin)+"ms----------");
-                        }
-                        catch (Exception e) {
+                            executor.execute(new CommitData(String.valueOf(begin),String.valueOf(end)));
+                        } catch (SQLException e) {
                             e.printStackTrace();
-                        }
-                        finally {
+                        } finally {
                             try {
                                 statement.close();
                                 connection.close();
